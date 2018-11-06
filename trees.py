@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[23]:
+# In[28]:
 
 
 from math import log
@@ -224,7 +224,7 @@ Modify:
     
 """
 
-def createTree(dataSet, labels, featLabels):
+def createTree(dataSet, labels):
     #列表变量取所有分类标签：是否是鱼 'yes' 'no'
     classList = [example[-1] for example in dataSet]
     #print("classList:")
@@ -237,9 +237,11 @@ def createTree(dataSet, labels, featLabels):
         return majorityCnt(classList)
     #选择最优特征
     bestFeat = chooseBestFeatureToSplit(dataSet)
+    print("bestFeat:")
+    print(bestFeat)
     #获取最优特征的标签
     bestFeatLabel = labels[bestFeat]
-    featLabels.append(bestFeatLabel)
+#     featLabels.append(bestFeatLabel)
     #字典类型：根据最优特征的标签生成树
     myTree = {bestFeatLabel:{}}
     #删除已经使用的特征标签
@@ -250,8 +252,8 @@ def createTree(dataSet, labels, featLabels):
     uniqueVals = set(featValues)
     #遍历当前选择特征包含的所有属性值，递归调用函数createTree()创建决策树
     for value in uniqueVals:
-        #subLabels = labels[:]
-        myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet, bestFeat, value), labels, featLabels)
+        subLabels = labels[:]
+        myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet, bestFeat, value), subLabels)
     return myTree
     
 """
@@ -293,8 +295,15 @@ def classify(inputTree, featLabels, testVec):
     return classLabel
     
     
-# if __name__ == '__main__':
-#     start = time.clock()
+if __name__ == '__main__':
+    start = time.clock()
+    fr = open('lenses.txt')
+    lenses = [inst.strip().split('\t') for inst in fr.readlines()]
+    lensesLabels = ['age', 'prescript', 'astigmatic', 'tearRate']
+#     featLabels = []
+#     lensesTree = createTree(lenses, lensesLabels,featLabels)
+    lensesTree = createTree(lenses, lensesLabels)
+    print(lensesTree)
 #     dataSet, labels = createDataSet()
 #     print(dataSet)
 # #     print("最优特征索引值:" + str(chooseBestFeatureToSplit(dataSet)))
@@ -304,8 +313,8 @@ def classify(inputTree, featLabels, testVec):
 #     testVec = [1, 1]
 #     classLabel = classify(myTree, featLabels, testVec)
 #     print(classLabel)
-#     end = time.clock()
-#     print("程序运行时间：%s 秒" % (end - start))
+    end = time.clock()
+    print("程序运行时间：%s 秒" % (end - start))
     
 
 
