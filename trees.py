@@ -1,12 +1,13 @@
 
 # coding: utf-8
 
-# In[28]:
+# In[10]:
 
 
 from math import log
 import time
 import operator
+import treePlotter
 """
 函数说明：创建测试数据集
 
@@ -303,7 +304,8 @@ if __name__ == '__main__':
 #     featLabels = []
 #     lensesTree = createTree(lenses, lensesLabels,featLabels)
     lensesTree = createTree(lenses, lensesLabels)
-    print(lensesTree)
+    treePlotter.createPlot(lensesTree)
+#     print(lensesTree)
 #     dataSet, labels = createDataSet()
 #     print(dataSet)
 # #     print("最优特征索引值:" + str(chooseBestFeatureToSplit(dataSet)))
