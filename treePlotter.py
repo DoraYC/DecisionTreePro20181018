@@ -7,7 +7,7 @@
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[39]:
+# In[2]:
 
 
 import matplotlib.pyplot as plt
@@ -126,7 +126,7 @@ Modify:
 
 def getNumLeafs(myTree):
     numLeafs = 0
-    firstStr = next(iter(myTree))
+    firstStr = list(myTree)[0]
     secondDict = myTree[firstStr]
     for key in secondDict.keys():
         #判断是否是字典类型，是，则该节点也是一个判断节点，需要递归getNumLeafs()函数
@@ -158,7 +158,7 @@ Modify:
 """
 def getTreeDepth(myTree):
     maxDepth = 0
-    firstStr = next(iter(myTree))
+    firstStr = list(myTree)[0]
     #获取下一组字典
     secondDict = myTree[firstStr]
     for key in secondDict.keys():
@@ -190,7 +190,7 @@ def plotTree(myTree, parentPt, nodeTxt):
     #获取树的高度
     depth = getTreeDepth(myTree)
     #下一个字典
-    firstStr = next(iter(myTree))
+    firstStr = list(myTree)[0]
     #中心位置，plotTree.totalW存储树的宽度
     cntrPt = (plotTree.xOff + (1.0 + float(numLeafs)) / 2.0 / plotTree.totalW, plotTree.yOff)
     #标注有向边属性

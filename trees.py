@@ -1,13 +1,14 @@
 
 # coding: utf-8
 
-# In[10]:
+# In[22]:
 
 
 from math import log
 import time
 import operator
-import treePlotter
+import importlib
+importlib.reload(treePlotter)
 """
 函数说明：创建测试数据集
 
@@ -103,11 +104,11 @@ def splitDataSet(dataSet, axis, value):
         #发现符合要求的值，将数据抽取出来
         if featVec[axis] == value:
             #去掉axis特征
-            reducedFeatVec = featVec[:axis] 
+            reducedFeatVec = featVec[:axis]
             #print("reducedFeatVec:")
             #print(reducedFeatVec)
             #将符合条件的元素添加到返回的列表
-            reducedFeatVec.extend(featVec[axis + 1:])
+            reducedFeatVec.extend(featVec[axis+1:])
             #print("reducedFeatVec2:")
             #print(reducedFeatVec)
             retDataSet.append(reducedFeatVec)
@@ -140,10 +141,8 @@ def chooseBestFeatureToSplit(dataSet):
     numFeatures = len(dataSet[0]) - 1
     #计算原始香农熵
     baseEntropy = calcShannonEnt(dataSet)
-    #信息增益
-    bestInfoGain = 0.0
-    #最优特征的索引值
-    bestFeature = -1
+    #信息增益 #最优特征的索引值
+    bestInfoGain = 0.0; bestFeature = -1
     #遍历数据集中的所有所有特征
     for i in range(numFeatures):
         #使用列表推导创建新的列表：将数据集中所有第i个特征值或者所有可能存在的值写入新list
@@ -154,9 +153,9 @@ def chooseBestFeatureToSplit(dataSet):
         #遍历当前特征中的所有唯一属性值
         for value in uniqueVals:
             #对每个唯一属性值划分一次数据集
-            subDataSet = splitDataSet(dataSet, i , value)
+            subDataSet = splitDataSet(dataSet, i, value)
             #计算数据集的概率
-            prob = len(subDataSet) / float(len(dataSet))
+            prob = len(subDataSet)/float(len(dataSet))
             #根据公式计算熵值，并求和
             newEntropy += prob * calcShannonEnt(subDataSet)
         #信息增益是熵的减少：用于度量数据无序度的减少
@@ -199,7 +198,7 @@ def majorityCnt(classList):
         if vote not in classCount.keys():
             classCount[vote] = 0
         classCount[vote] += 1
-    sortedClassCount = sorted(classCount.items(), key = operator.itemgetter(1), reverse = True)
+    sortedClassCount = sorted(classCount.items(), key=operator.itemgetter(1), reverse=True)
     print("sortedClassCount:" + str(sortedClassCount))
     #返回出现次数最多的元素
     return sortedClassCount[0][0]
@@ -242,6 +241,8 @@ def createTree(dataSet, labels):
     print(bestFeat)
     #获取最优特征的标签
     bestFeatLabel = labels[bestFeat]
+    print("bestFeatLabel")
+    print(bestFeatLabel)
 #     featLabels.append(bestFeatLabel)
     #字典类型：根据最优特征的标签生成树
     myTree = {bestFeatLabel:{}}
@@ -281,7 +282,8 @@ Modify:
 def classify(inputTree, featLabels, testVec):
     #获取决策树结点,iter()生成迭代器，next(iter())返回迭代器的下一个项目
     #firstStr = inputTree.keys()[0]
-    firstStr = next(iter(inputTree))
+#     firstStr = next(iter(inputTree))
+    firstStr = list(inputTree)[0]
     #下一个字典
     secondDict = inputTree[firstStr]
     #使用index方法查找当前列表中第一个匹配firstStr变量的元素
@@ -304,6 +306,7 @@ if __name__ == '__main__':
 #     featLabels = []
 #     lensesTree = createTree(lenses, lensesLabels,featLabels)
     lensesTree = createTree(lenses, lensesLabels)
+    print(lensesTree)
     treePlotter.createPlot(lensesTree)
 #     print(lensesTree)
 #     dataSet, labels = createDataSet()
@@ -320,7 +323,7 @@ if __name__ == '__main__':
     
 
 
-# In[18]:
+# In[19]:
 
 
 import pickle
